@@ -17,7 +17,6 @@ export default function App() {
   const [authMessage, setAuthMessage] = useState('')
   const [view, setView] = useState<View>('dashboard')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
-  const [organizations, setOrganizations] = useState<Organization[]>([])
   const [activeOrganization, setActiveOrganization] = useState<Organization | null>(null)
   const [role, setRole] = useState<OrganizationRole | null>(null)
   const [events, setEvents] = useState<EventRecord[]>([])
@@ -37,7 +36,7 @@ export default function App() {
 
   useEffect(() => {
     if (!session || !supabase) {
-      setOrganizations([]); setActiveOrganization(null); setRole(null); setEvents([])
+      setActiveOrganization(null); setRole(null); setEvents([])
       return
     }
     let alive = true
@@ -55,8 +54,6 @@ export default function App() {
         const org = Array.isArray(row.organizations) ? row.organizations[0] : row.organizations
         return org ? [{ org, role: row.role }] : []
       })
-      const nextOrganizations = mapped.map((item) => item.org)
-      setOrganizations(nextOrganizations)
       setActiveOrganization((current) => mapped.find((item) => item.org.id === current?.id)?.org ?? mapped[0]?.org ?? null)
       setRole(mapped.find((item) => item.org.id === activeOrganization?.id)?.role ?? mapped[0]?.role ?? null)
       setLoadingData(false)
@@ -107,7 +104,6 @@ export default function App() {
       const { data: org, error: fetchError } = await supabase.from('organizations').select('*').eq('id', id).single()
       if (fetchError) setDataError('Organização criada, mas não foi possível atualizar a tela. Recarregue a página.')
       else if (org) {
-        setOrganizations((current) => [...current, org as Organization])
         setActiveOrganization(org as Organization); setRole('owner')
       }
     }
