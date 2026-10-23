@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['eventflow-icon.svg'],
+      includeAssets: ['eventflow-icon.svg', 'pwa-192.png', 'pwa-512.png'],
       manifest: {
         name: 'EventFlow Pro',
         short_name: 'EventFlow',
@@ -19,12 +19,9 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         icons: [
-          {
-            src: '/eventflow-icon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml',
-            purpose: 'any maskable',
-          },
+          { src: '/pwa-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/pwa-512.png', sizes: '512x512', type: 'image/png' },
+          { src: '/eventflow-icon.svg', sizes: 'any', type: 'image/svg+xml' },
         ],
       },
       workbox: {
